@@ -1,8 +1,10 @@
 import os
 import logging
+import requests
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from urllib.parse import quote
+import random
 
 # =============================================
 # 🔥 DEVELOPER CREDENTIALS - PRO WELCOME
@@ -15,120 +17,179 @@ BOT_VERSION = "𝐏𝐑𝐎 𝟐.𝟎.𝟎"
 BOT_EMOJI = "🤖🔥"
 
 # =============================================
-# 🎬 SIRF EDITING APPS KEYWORDS
+# 🎬 EDITING APPS WITH DIRECT DOWNLOAD LINKS
 # =============================================
-EDITING_KEYWORDS = [
-    "capcut", "picsart", "pixelab", "inshot", "kinemaster",
-    "alight motion", "viva video", "powerdirector", "filmora",
-    "snapseed", "lightroom", "canva", "photofox", "videoleap",
-    "remini", "vsco", "pixlr", "touchretouch", "beautyplus",
-    "capcut pro", "picsart pro", "pixelab pro", "inshot pro"
-]
+DIRECT_APPS = {
+    "capcut": {
+        "name": "CapCut Pro",
+        "url": "https://d.apkpure.com/b/APK/CapCut?version=latest",
+        "direct": True
+    },
+    "capcut pro": {
+        "name": "CapCut Pro",
+        "url": "https://d.apkpure.com/b/APK/CapCut?version=latest",
+        "direct": True
+    },
+    "picsart": {
+        "name": "Picsart Pro",
+        "url": "https://d.apkpure.com/b/APK/Picsart?version=latest",
+        "direct": True
+    },
+    "picsart pro": {
+        "name": "Picsart Pro",
+        "url": "https://d.apkpure.com/b/APK/Picsart?version=latest",
+        "direct": True
+    },
+    "pixelab": {
+        "name": "PixelLab Pro",
+        "url": "https://d.apkpure.com/b/APK/PixelLab?version=latest",
+        "direct": True
+    },
+    "inshot": {
+        "name": "InShot Pro",
+        "url": "https://d.apkpure.com/b/APK/InShot?version=latest",
+        "direct": True
+    },
+    "kinemaster": {
+        "name": "KineMaster Pro",
+        "url": "https://d.apkpure.com/b/APK/KineMaster?version=latest",
+        "direct": True
+    },
+    "alight motion": {
+        "name": "Alight Motion Pro",
+        "url": "https://d.apkpure.com/b/APK/Alight%20Motion?version=latest",
+        "direct": True
+    },
+    "lightroom": {
+        "name": "Lightroom Pro",
+        "url": "https://d.apkpure.com/b/APK/Lightroom?version=latest",
+        "direct": True
+    },
+    "snapseed": {
+        "name": "Snapseed Pro",
+        "url": "https://d.apkpure.com/b/APK/Snapseed?version=latest",
+        "direct": True
+    },
+    "canva": {
+        "name": "Canva Pro",
+        "url": "https://d.apkpure.com/b/APK/Canva?version=latest",
+        "direct": True
+    },
+    "filmora": {
+        "name": "Filmora Pro",
+        "url": "https://d.apkpure.com/b/APK/Filmora?version=latest",
+        "direct": True
+    },
+    "viva video": {
+        "name": "VivaVideo Pro",
+        "url": "https://d.apkpure.com/b/APK/VivaVideo?version=latest",
+        "direct": True
+    },
+    "powerdirector": {
+        "name": "PowerDirector Pro",
+        "url": "https://d.apkpure.com/b/APK/PowerDirector?version=latest",
+        "direct": True
+    }
+}
 
 # =============================================
-# 🚀 PRO WELCOME - FULL STYLE (SAME)
+# 🚀 PRO WELCOME
 # =============================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
-    first_name = user.first_name if user.first_name else "𝐁𝐫𝐨"
+    first_name = user.first_name if user.first_name else "Bro"
     
     welcome = f"""
 ╔════════════════════════╗
 ║  {BOT_EMOJI} 𝐄𝐃𝐈𝐓𝐈𝐍𝐆 𝐏𝐑𝐎 {BOT_EMOJI}  ║
 ╚════════════════════════╝
 
-𝐇𝐞𝐥𝐥𝐨 **{first_name}**! 👋
+Hello **{first_name}**! 👋
 
 ━━━━━━━━━━━━━━━━━━━━━
-🔍 **𝐊𝐚𝐢𝐬𝐞 𝐊𝐚𝐦 𝐊𝐚𝐫𝐭𝐚 𝐇𝐚𝐢?**
+🔥 **DIRECT APK DOWNLOAD** 🔥
 ━━━━━━━━━━━━━━━━━━━━━
 
-➡️ 𝐀𝐚𝐩 𝐞𝐝𝐢𝐭𝐢𝐧𝐠 𝐚𝐩𝐩 𝐤𝐚 𝐧𝐚𝐚𝐦 𝐥𝐢𝐤𝐡𝐨
-➡️ 𝐁𝐨𝐭 𝐚𝐩𝐤𝐨 𝐝𝐢𝐫𝐞𝐜𝐭 𝐥𝐢𝐧𝐤 𝐛𝐡𝐞𝐣𝐞𝐠𝐚
-➡️ 𝐋𝐢𝐧𝐤 𝐭𝐚𝐩 𝐤𝐚𝐫𝐨 → 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐬𝐡𝐮𝐫𝐮
+✅ **CapCut Pro** - Direct Link
+✅ **Picsart Pro** - Direct Link  
+✅ **PixelLab Pro** - Direct Link
+✅ **InShot Pro** - Direct Link
+✅ **KineMaster Pro** - Direct Link
+✅ **Alight Motion Pro** - Direct Link
+✅ **Lightroom Pro** - Direct Link
+✅ **Snapseed Pro** - Direct Link
 
 ━━━━━━━━━━━━━━━━━━━━━
-✅ **𝐒𝐢𝐫𝐟 𝐄𝐝𝐢𝐭𝐢𝐧𝐠 𝐀𝐩𝐩𝐬 𝐤𝐚 𝐥𝐢𝐧𝐤 𝐦𝐢𝐥𝐞𝐠𝐚**
+👑 **Developer**: `{DEVELOPER}`
+📢 **Channel**: [{CHANNEL_NAME}]({CHANNEL_LINK})
 ━━━━━━━━━━━━━━━━━━━━━
 
-👑 **𝐃𝐄𝐕**: `{DEVELOPER}`
-📢 **𝐂𝐇𝐀𝐍𝐍𝐄𝐋**: [{CHANNEL_NAME}]({CHANNEL_LINK})
-🤖 **𝐕𝐄𝐑𝐒𝐈𝐎𝐍**: {BOT_VERSION}
-━━━━━━━━━━━━━━━━━━━━━
-
-💎 **𝐀𝐩𝐩 𝐧𝐚𝐚𝐦 𝐥𝐢𝐤𝐡𝐨 👇**
+💎 **App naam likho → Direct download start!**
 `capcut pro`  `picsart`  `pixelab`  `inshot`
 """
     
-    keyboard = [[InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)]]
+    keyboard = [[InlineKeyboardButton("📢 JOIN CHANNEL", url=CHANNEL_LINK)]]
     await update.message.reply_text(welcome, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode='Markdown')
 
 # =============================================
-# 🔎 EDITING APP CHECK (All Languages Allow)
+# 🔍 DIRECT DOWNLOAD LINK BHEJO
 # =============================================
-def is_editing_app(query):
-    """Check karo ki user ne editing app likha ya nahi - Sab languages allow"""
-    query_lower = query.lower()
-    for keyword in EDITING_KEYWORDS:
-        if keyword in query_lower:
-            return True
-    return False
-
-# =============================================
-# 🔍 BAS LINK BHEJO - KOI NAAM NAHI
-# =============================================
-async def send_download_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.message.text.strip()
+async def direct_download(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.message.text.lower().strip()
     
-    # Empty check
     if len(query) < 2:
-        await update.message.reply_text("❌ Kam se kam 2 letters likho bhai!")
+        await update.message.reply_text("❌ Kam se kam 2 letters likho!")
         return
     
-    # SIRF EDITING APPS ALLOWED
-    if not is_editing_app(query):
-        editing_list = "\n".join([f"• `{k}`" for k in EDITING_KEYWORDS[:12]])
-        not_editing = f"""
-❌ **Yeh editing app nahi hai!**
+    # Search in direct apps database
+    found_app = None
+    for key, app in DIRECT_APPS.items():
+        if key in query:
+            found_app = app
+            break
+    
+    if found_app:
+        # Direct download button - TAP KARTE HI DOWNLOAD SHURU!
+        download_text = f"""
+✅ **{found_app['name']}**
 
-✅ **Sirf yeh apps allow hain:**
-{editing_list}
+━━━━━━━━━━━━━━━━━━━━━
+📥 **Neeche button tap karo**
+📲 **APK Pure se direct download hoga**
+━━━━━━━━━━━━━━━━━━━━━
+👑 **Dev**: {DEVELOPER}
+📢 **Channel**: @{CHANNEL_USERNAME}
+━━━━━━━━━━━━━━━━━━━━━
+        """
+        
+        keyboard = [[
+            InlineKeyboardButton("📥 DIRECT DOWNLOAD NOW", url=found_app['url'])
+        ]]
+        
+        await update.message.reply_text(
+            download_text,
+            reply_markup=InlineKeyboardMarkup(keyboard),
+            parse_mode='Markdown'
+        )
+    else:
+        # App not found - show available apps
+        apps_list = "\n".join([f"• `{key}`" for key in DIRECT_APPS.keys()])
+        
+        not_found = f"""
+❌ **App not found in database**
+
+✅ **Available apps:**
+{apps_list}
 
 ━━━━━━━━━━━━━━━━━━━━━
 👨‍💻 **Dev**: {DEVELOPER}
 📢 **Channel**: @{CHANNEL_USERNAME}
 ━━━━━━━━━━━━━━━━━━━━━
 
-💡 **Koi editing app ka naam likho ↑**
+💡 **Type any app name from above list**
         """
-        await update.message.reply_text(not_editing, parse_mode='Markdown')
-        return
-    
-    # ✅ EDITING APP HAI - BAS LINK BHEJO
-    search_query = quote(query)
-    download_url = f"https://apkpure.com/search?q={search_query}"
-    
-    # Simple result - Sirf link ka button
-    result_text = f"""
-✅ **{query.title()}**
-
-⬇️ **Link tap karo → Download start**
-
-━━━━━━━━━━━━━━━━━━━━━
-👑 **Dev**: {DEVELOPER}
-📢 **Channel**: @{CHANNEL_USERNAME}
-━━━━━━━━━━━━━━━━━━━━━
-    """
-    
-    keyboard = [[
-        InlineKeyboardButton("📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃 𝐍𝐎𝐖", url=download_url)
-    ]]
-    
-    await update.message.reply_text(
-        result_text,
-        reply_markup=InlineKeyboardMarkup(keyboard),
-        parse_mode='Markdown'
-    )
+        
+        await update.message.reply_text(not_found, parse_mode='Markdown')
 
 # =============================================
 # 📢 ABOUT COMMAND
@@ -136,19 +197,19 @@ async def send_download_link(update: Update, context: ContextTypes.DEFAULT_TYPE)
 async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
     about_text = f"""
 ╔════════════════════════╗
-║  🤖 𝐁𝐎𝐓 𝐈𝐍𝐅𝐎 🤖      ║
+║  🤖 BOT INFO 🤖       ║
 ╚════════════════════════╝
 
 ━━━━━━━━━━━━━━━━━━━━━
-👑 **Dev**: `{DEVELOPER}`
+👑 **Developer**: `{DEVELOPER}`
 📢 **Channel**: @{CHANNEL_USERNAME}
 🤖 **Version**: {BOT_VERSION}
 ━━━━━━━━━━━━━━━━━━━━━
 
 ✨ **Features**:
-✅ Sirf editing apps
-✅ Direct download link
-✅ Sab languages allow
+✅ Direct APK download links
+✅ 15+ editing apps
+✅ One tap download
 ✅ 100% working
 
 ━━━━━━━━━━━━━━━━━━━━━
@@ -157,7 +218,7 @@ async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
 ━━━━━━━━━━━━━━━━━━━━━
     """
     
-    keyboard = [[InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)]]
+    keyboard = [[InlineKeyboardButton("📢 JOIN CHANNEL", url=CHANNEL_LINK)]]
     await update.message.reply_text(about_text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode='Markdown')
 
 # =============================================
@@ -166,7 +227,7 @@ async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     token = os.environ.get('TELEGRAM_BOT_TOKEN')
     if not token:
-        print("❌ Token nahi mila!")
+        print("❌ Token not found!")
         return
     
     app = Application.builder().token(token).build()
@@ -174,11 +235,12 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("about", about))
     app.add_handler(CommandHandler("developer", about))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, send_download_link))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, direct_download))
     
-    print("✅ Editing Pro Bot Started!")
+    print("✅ DIRECT DOWNLOAD BOT STARTED!")
     print(f"👑 Developer: {DEVELOPER}")
     print(f"📢 Channel: @{CHANNEL_USERNAME}")
+    print("🔥 Direct APK links ready!")
     
     app.run_polling()
 
