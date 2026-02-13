@@ -21,11 +21,12 @@ EDITING_KEYWORDS = [
     "capcut", "picsart", "pixelab", "inshot", "kinemaster",
     "alight motion", "viva video", "powerdirector", "filmora",
     "snapseed", "lightroom", "canva", "photofox", "videoleap",
-    "remini", "vsco", "pixlr", "touchretouch", "beautyplus"
+    "remini", "vsco", "pixlr", "touchretouch", "beautyplus",
+    "capcut pro", "picsart pro", "pixelab pro", "inshot pro"
 ]
 
 # =============================================
-# 🚀 PRO WELCOME - FULL STYLE
+# 🚀 PRO WELCOME - FULL STYLE (SAME)
 # =============================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
@@ -38,19 +39,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 𝐇𝐞𝐥𝐥𝐨 **{first_name}**! 👋
 
-✨ 𝐀𝐏𝐊𝐏𝐮𝐫𝐞 𝐒𝐞𝐚𝐫𝐜𝐡 𝐁𝐨𝐭 ✨
-
 ━━━━━━━━━━━━━━━━━━━━━
 🔍 **𝐊𝐚𝐢𝐬𝐞 𝐊𝐚𝐦 𝐊𝐚𝐫𝐭𝐚 𝐇𝐚𝐢?**
 ━━━━━━━━━━━━━━━━━━━━━
 
-1️⃣ 𝐀𝐚𝐩 𝐞𝐝𝐢𝐭𝐢𝐧𝐠 𝐚𝐩𝐩 𝐤𝐚 𝐧𝐚𝐚𝐦 𝐥𝐢𝐤𝐡𝐨
-2️⃣ 𝐁𝐨𝐭 𝐀𝐏𝐊𝐏𝐮𝐫𝐞 𝐤𝐚 𝐥𝐢𝐧𝐤 𝐛𝐚𝐧𝐚𝐞𝐠𝐚
-3️⃣ 𝐀𝐚𝐩 𝐭𝐚𝐩 𝐤𝐚𝐫𝐨 → 𝐀𝐏𝐊𝐏𝐮𝐫𝐞 𝐤𝐡𝐮𝐥𝐞𝐠𝐚
-4️⃣ 𝐕𝐡𝐚𝐚𝐧 𝐬𝐞 𝐝𝐢𝐫𝐞𝐜𝐭 𝐝𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐤𝐚𝐫𝐨
+➡️ 𝐀𝐚𝐩 𝐞𝐝𝐢𝐭𝐢𝐧𝐠 𝐚𝐩𝐩 𝐤𝐚 𝐧𝐚𝐚𝐦 𝐥𝐢𝐤𝐡𝐨
+➡️ 𝐁𝐨𝐭 𝐚𝐩𝐤𝐨 𝐝𝐢𝐫𝐞𝐜𝐭 𝐥𝐢𝐧𝐤 𝐛𝐡𝐞𝐣𝐞𝐠𝐚
+➡️ 𝐋𝐢𝐧𝐤 𝐭𝐚𝐩 𝐤𝐚𝐫𝐨 → 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐬𝐡𝐮𝐫𝐮
 
 ━━━━━━━━━━━━━━━━━━━━━
-✅ **𝐒𝐢𝐫𝐟 𝐄𝐝𝐢𝐭𝐢𝐧𝐠 𝐀𝐩𝐩𝐬 𝐤𝐚 𝐬𝐞𝐚𝐫𝐜𝐡 𝐡𝐨𝐠𝐚**
+✅ **𝐒𝐢𝐫𝐟 𝐄𝐝𝐢𝐭𝐢𝐧𝐠 𝐀𝐩𝐩𝐬 𝐤𝐚 𝐥𝐢𝐧𝐤 𝐦𝐢𝐥𝐞𝐠𝐚**
 ━━━━━━━━━━━━━━━━━━━━━
 
 👑 **𝐃𝐄𝐕**: `{DEVELOPER}`
@@ -60,16 +58,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 💎 **𝐀𝐩𝐩 𝐧𝐚𝐚𝐦 𝐥𝐢𝐤𝐡𝐨 👇**
 `capcut pro`  `picsart`  `pixelab`  `inshot`
-    """
+"""
     
     keyboard = [[InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)]]
     await update.message.reply_text(welcome, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode='Markdown')
 
 # =============================================
-# 🔎 EDITING APP CHECK KARO
+# 🔎 EDITING APP CHECK (All Languages Allow)
 # =============================================
 def is_editing_app(query):
-    """Check karo ki user ne editing app likha ya nahi"""
+    """Check karo ki user ne editing app likha ya nahi - Sab languages allow"""
     query_lower = query.lower()
     for keyword in EDITING_KEYWORDS:
         if keyword in query_lower:
@@ -77,62 +75,53 @@ def is_editing_app(query):
     return False
 
 # =============================================
-# 🔍 APKPURE SEARCH LINK BANAO
+# 🔍 BAS LINK BHEJO - KOI NAAM NAHI
 # =============================================
-async def search_apkpure(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def send_download_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.message.text.strip()
     
-    # Check for empty query
+    # Empty check
     if len(query) < 2:
-        await update.message.reply_text("❌ **Kam se kam 2 letters likho!**", parse_mode='Markdown')
+        await update.message.reply_text("❌ Kam se kam 2 letters likho bhai!")
         return
     
     # SIRF EDITING APPS ALLOWED
     if not is_editing_app(query):
-        editing_list = "\n".join([f"• `{k}`" for k in EDITING_KEYWORDS[:15]])
+        editing_list = "\n".join([f"• `{k}`" for k in EDITING_KEYWORDS[:12]])
         not_editing = f"""
-❌ **𝐘𝐞𝐡 𝐞𝐝𝐢𝐭𝐢𝐧𝐠 𝐚𝐩𝐩 𝐧𝐚𝐡𝐢 𝐡𝐚𝐢!**
+❌ **Yeh editing app nahi hai!**
 
-━━━━━━━━━━━━━━━━━━━━━
-✅ **𝐒𝐢𝐫𝐟 𝐲𝐞𝐡 𝐚𝐩𝐩𝐬 𝐚𝐥𝐥𝐨𝐰𝐞𝐝 𝐡𝐚𝐢𝐧:**
-
+✅ **Sirf yeh apps allow hain:**
 {editing_list}
+
 ━━━━━━━━━━━━━━━━━━━━━
-👨‍💻 **𝐃𝐄𝐕**: {DEVELOPER}
-📢 **𝐂𝐇𝐀𝐍𝐍𝐄𝐋**: @{CHANNEL_USERNAME}
+👨‍💻 **Dev**: {DEVELOPER}
+📢 **Channel**: @{CHANNEL_USERNAME}
 ━━━━━━━━━━━━━━━━━━━━━
 
-💡 **𝐊𝐨𝐢 𝐞𝐝𝐢𝐭𝐢𝐧𝐠 𝐚𝐩𝐩 𝐤𝐚 𝐧𝐚𝐚𝐦 𝐥𝐢𝐤𝐡𝐨**
+💡 **Koi editing app ka naam likho ↑**
         """
         await update.message.reply_text(not_editing, parse_mode='Markdown')
         return
     
-    # ✅ EDITING APP HAI - APKPURE SEARCH LINK BANAO
+    # ✅ EDITING APP HAI - BAS LINK BHEJO
     search_query = quote(query)
-    apkpure_url = f"https://apkpure.com/search?q={search_query}"
+    download_url = f"https://apkpure.com/search?q={search_query}"
     
-    # PRO RESULT CARD
+    # Simple result - Sirf link ka button
     result_text = f"""
-╔════════════════════════╗
-║  🔍 𝐀𝐏𝐊𝐏𝐮𝐫𝐞 𝐒𝐄𝐀𝐑𝐂𝐇  ║
-╚════════════════════════╝
+✅ **{query.title()}**
+
+⬇️ **Link tap karo → Download start**
 
 ━━━━━━━━━━━━━━━━━━━━━
-📱 **𝐀𝐩𝐩**: `{query}`
-🌐 **𝐒𝐨𝐮𝐫𝐜𝐞**: `APKPure.com`
-━━━━━━━━━━━━━━━━━━━━━
-
-✅ **𝐘𝐞𝐡 𝐞𝐝𝐢𝐭𝐢𝐧𝐠 𝐚𝐩𝐩 𝐡𝐚𝐢!**
-⬇️ **𝐍𝐢𝐜𝐡𝐞 𝐛𝐮𝐭𝐭𝐨𝐧 𝐭𝐚𝐩 𝐤𝐚𝐫𝐨**
-
-━━━━━━━━━━━━━━━━━━━━━
-👑 **𝐃𝐄𝐕**: {DEVELOPER}
-📢 **𝐂𝐇𝐀𝐍𝐍𝐄𝐋**: @{CHANNEL_USERNAME}
+👑 **Dev**: {DEVELOPER}
+📢 **Channel**: @{CHANNEL_USERNAME}
 ━━━━━━━━━━━━━━━━━━━━━
     """
     
     keyboard = [[
-        InlineKeyboardButton("🔍 𝐀𝐏𝐊𝐏𝐮𝐫𝐞 𝐩𝐞 𝐬𝐞𝐚𝐫𝐜𝐡 𝐤𝐚𝐫𝐨", url=apkpure_url)
+        InlineKeyboardButton("📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃 𝐍𝐎𝐖", url=download_url)
     ]]
     
     await update.message.reply_text(
@@ -151,20 +140,20 @@ async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
 ╚════════════════════════╝
 
 ━━━━━━━━━━━━━━━━━━━━━
-👑 **𝐃𝐄𝐕**: `{DEVELOPER}`
-📢 **𝐂𝐇𝐀𝐍𝐍𝐄𝐋**: @{CHANNEL_USERNAME}
-🤖 **𝐕𝐄𝐑𝐒𝐈𝐎𝐍**: {BOT_VERSION}
+👑 **Dev**: `{DEVELOPER}`
+📢 **Channel**: @{CHANNEL_USERNAME}
+🤖 **Version**: {BOT_VERSION}
 ━━━━━━━━━━━━━━━━━━━━━
 
-✨ **𝐅𝐄𝐀𝐓𝐔𝐑𝐄𝐒**:
-✅ 𝐒𝐢𝐫𝐟 𝐞𝐝𝐢𝐭𝐢𝐧𝐠 𝐚𝐩𝐩𝐬
-✅ 𝐀𝐏𝐊𝐏𝐮𝐫𝐞 𝐬𝐞𝐚𝐫𝐜𝐡 𝐥𝐢𝐧𝐤
-✅ 𝟏𝟎𝟎% 𝐰𝐨𝐫𝐤𝐢𝐧𝐠
-✅ 𝐍𝐨 𝐬𝐜𝐫𝐚𝐩𝐢𝐧𝐠
+✨ **Features**:
+✅ Sirf editing apps
+✅ Direct download link
+✅ Sab languages allow
+✅ 100% working
 
 ━━━━━━━━━━━━━━━━━━━━━
-⭐ 𝐌𝐚𝐝𝐞 𝐰𝐢𝐭𝐡 ❤️ 𝐛𝐲 {DEVELOPER}
-📢 𝐉𝐨𝐢𝐧 @{CHANNEL_USERNAME}
+⭐ Made by {DEVELOPER}
+📢 Join @{CHANNEL_USERNAME}
 ━━━━━━━━━━━━━━━━━━━━━
     """
     
@@ -177,7 +166,7 @@ async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     token = os.environ.get('TELEGRAM_BOT_TOKEN')
     if not token:
-        print("❌ Token not found!")
+        print("❌ Token nahi mila!")
         return
     
     app = Application.builder().token(token).build()
@@ -185,9 +174,9 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("about", about))
     app.add_handler(CommandHandler("developer", about))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, search_apkpure))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, send_download_link))
     
-    print("✅ 𝐀𝐏𝐊𝐏𝐮𝐫𝐞 𝐒𝐞𝐚𝐫𝐜𝐡 𝐁𝐨𝐭 𝐒𝐭𝐚𝐫𝐭𝐞𝐝!")
+    print("✅ Editing Pro Bot Started!")
     print(f"👑 Developer: {DEVELOPER}")
     print(f"📢 Channel: @{CHANNEL_USERNAME}")
     
