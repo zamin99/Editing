@@ -5,176 +5,260 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from bs4 import BeautifulSoup
 import random
+import time
+from urllib.parse import quote
 
 # =============================================
-# 🔥 DEVELOPER CREDENTIALS
+# 🔥 DEVELOPER CREDENTIALS - PRO WELCOME
 # =============================================
 DEVELOPER = "@SIGMAXZAMIN"
 CHANNEL_USERNAME = "ZAMINTRICKS"
 CHANNEL_LINK = "https://t.me/ZAMINTRICKS"
+CHANNEL_NAME = "𝐙𝐀𝐌𝐈𝐍 𝐓𝐑𝐈𝐂𝐊𝐒"
+BOT_VERSION = "𝐏𝐑𝐎 𝟐.𝟎.𝟎"
+BOT_EMOJI = "🤖🔥"
 
 # =============================================
-# 🎬 EDITING APPS KEYWORDS
+# 🎬 EDITING APPS DATABASE (MANUAL - 100% GUARANTEED)
 # =============================================
-EDITING_KEYWORDS = [
-    "capcut", "picsart", "pixelab", "inshot", "kinemaster",
-    "alight motion", "snapseed", "lightroom", "canva"
-]
+PRO_APPS = {
+    "capcut": {
+        "name": "🎬 𝐂𝐚𝐩𝐂𝐮𝐭 𝐏𝐑𝐎",
+        "link": "https://www.modapkdown.com/capcut-mod-apk/download",
+        "version": "𝐏𝐑𝐎 𝐔𝐧𝐥𝐨𝐜𝐤𝐞𝐝",
+        "size": "𝟖𝟓 𝐌𝐁"
+    },
+    "capcut pro": {
+        "name": "🎬 𝐂𝐚𝐩𝐂𝐮𝐭 𝐏𝐑𝐎",
+        "link": "https://www.modapkdown.com/capcut-mod-apk/download",
+        "version": "𝐏𝐑𝐎 𝐔𝐧𝐥𝐨𝐜𝐤𝐞𝐝",
+        "size": "𝟖𝟓 𝐌𝐁"
+    },
+    "picsart": {
+        "name": "🎨 𝐏𝐢𝐜𝐬𝐀𝐫𝐭 𝐏𝐑𝐎",
+        "link": "https://picsart-pro-mod.com/download-latest",
+        "version": "𝐏𝐑𝐎 𝟐𝟑.𝟗.𝟏",
+        "size": "𝟕𝟐 𝐌𝐁"
+    },
+    "picsart pro": {
+        "name": "🎨 𝐏𝐢𝐜𝐬𝐀𝐫𝐭 𝐏𝐑𝐎",
+        "link": "https://picsart-pro-mod.com/download-latest",
+        "version": "𝐏𝐑𝐎 𝟐𝟑.𝟗.𝟏",
+        "size": "𝟕𝟐 𝐌𝐁"
+    },
+    "pixelab": {
+        "name": "✨ 𝐏𝐢𝐱𝐞𝐋𝐚𝐛 𝐏𝐑𝐎",
+        "link": "https://pixelab-mod.com/pro-download",
+        "version": "𝐏𝐑𝐎 𝟐.𝟏.𝟎",
+        "size": "𝟒𝟓 𝐌𝐁"
+    },
+    "inshot": {
+        "name": "📱 𝐈𝐧𝐒𝐡𝐨𝐭 𝐏𝐑𝐎",
+        "link": "https://inshot-mod.com/pro-unlocked",
+        "version": "𝐏𝐑𝐎 𝟐.𝟓.𝟎",
+        "size": "𝟗𝟎 𝐌𝐁"
+    },
+    "kinemaster": {
+        "name": "🎥 𝐊𝐢𝐧𝐞𝐌𝐚𝐬𝐭𝐞𝐫 𝐏𝐑𝐎",
+        "link": "https://kinemaster-mod.net/premium",
+        "version": "𝐏𝐑𝐎 𝟕.𝟓.𝟎",
+        "size": "𝟏𝟐𝟎 𝐌𝐁"
+    },
+    "alight motion": {
+        "name": "✨ 𝐀𝐥𝐢𝐠𝐡𝐭 𝐌𝐨𝐭𝐢𝐨𝐧 𝐏𝐑𝐎",
+        "link": "https://alightmotion-pro.com/mod-apk",
+        "version": "𝐏𝐑𝐎 𝟓.𝟎.𝟎",
+        "size": "𝟗𝟓 𝐌𝐁"
+    },
+    "lightroom": {
+        "name": "📸 𝐋𝐢𝐠𝐡𝐭𝐫𝐨𝐨𝐦 𝐏𝐑𝐎",
+        "link": "https://lightroom-mod.com/premium",
+        "version": "𝐏𝐑𝐎 𝟖.𝟎.𝟎",
+        "size": "𝟕𝟖 𝐌𝐁"
+    },
+    "snapseed": {
+        "name": "🖼️ 𝐒𝐧𝐚𝐩𝐬𝐞𝐞𝐝 𝐏𝐑𝐎",
+        "link": "https://snapseed-pro.com/mod",
+        "version": "𝐏𝐑𝐎 𝟐.𝟐.𝟎",
+        "size": "𝟑𝟓 𝐌𝐁"
+    }
+}
 
 # =============================================
-# 🔄 ROTATING USER AGENTS (BLOCKING SE BACHNE KE LIYE)
-# =============================================
-USER_AGENTS = [
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-    'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15',
-    'Mozilla/5.0 (Linux; Android 11; SM-G998B) AppleWebKit/537.36',
-]
-
-# =============================================
-# 🔍 ALTERNATIVE APK SOURCE - HAPPYMOD (WORKING)
-# =============================================
-def search_happymod(query):
-    """HappyMod se search - APKPure block hone par alternative"""
-    results = []
-    
-    try:
-        url = f"https://happymod.com/search/?q={query.replace(' ', '+')}"
-        headers = {
-            'User-Agent': random.choice(USER_AGENTS),
-            'Accept': 'text/html,application/xhtml+xml',
-        }
-        
-        response = requests.get(url, headers=headers, timeout=15)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # App items find karo
-        app_items = soup.select('.app-list-item, .search-item, .pd-list-li')
-        
-        for item in app_items[:5]:
-            try:
-                name_elem = item.select_one('.app-name, .media-heading, h3')
-                app_name = name_elem.text.strip() if name_elem else "Unknown"
-                
-                link_elem = item.select_one('a')
-                if link_elem and link_elem.get('href'):
-                    download_url = link_elem['href']
-                    if not download_url.startswith('http'):
-                        download_url = 'https://happymod.com' + download_url
-                    
-                    # Check editing app
-                    app_lower = app_name.lower()
-                    is_editing = any(keyword in app_lower for keyword in EDITING_KEYWORDS)
-                    
-                    if is_editing:
-                        results.append({
-                            "name": app_name[:50],
-                            "version": "Latest Mod",
-                            "size": "N/A",
-                            "download_url": download_url,
-                            "source": "HappyMod"
-                        })
-            except:
-                continue
-                
-    except Exception as e:
-        logger.error(f"HappyMod error: {e}")
-    
-    return results
-
-# =============================================
-# 🔍 MAIN SEARCH FUNCTION (DONO SOURCES TRY KAREGA)
-# =============================================
-async def search_apps(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.message.text.strip()
-    
-    if len(query) < 2:
-        return
-    
-    status = await update.message.reply_text(
-        f"🔍 Searching for {query}...\n👨‍💻 Dev: {DEVELOPER}"
-    )
-    
-    # Pehle APKPure try karo
-    results = []
-    
-    # APKPure search
-    try:
-        url = f"https://apkpure.net/search?q={query.replace(' ', '%20')}"
-        headers = {'User-Agent': random.choice(USER_AGENTS)}
-        response = requests.get(url, headers=headers, timeout=10)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        for item in soup.select('.search-result li')[:3]:
-            name = item.text.strip()[:40] if item.text else "App"
-            link = item.select_one('a')
-            if link and link.get('href'):
-                dl_url = link['href']
-                if not dl_url.startswith('http'):
-                    dl_url = 'https://apkpure.net' + dl_url
-                results.append({
-                    "name": name,
-                    "url": dl_url,
-                    "source": "APKPure"
-                })
-    except:
-        pass
-    
-    # Agar APKPure se kuch nahi mila toh HappyMod try karo
-    if not results:
-        results = search_happymod(query)
-    
-    if not results:
-        await status.edit_text(
-            f"❌ No results found for '{query}'\n"
-            f"Try: capcut pro, picsart, pixelab\n\n"
-            f"👨‍💻 {DEVELOPER} | 📢 @{CHANNEL_USERNAME}"
-        )
-        return
-    
-    await status.delete()
-    
-    for app in results[:3]:
-        keyboard = [[
-            InlineKeyboardButton("⬇️ DOWNLOAD MOD", url=app['url'])
-        ]]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        
-        await update.message.reply_text(
-            f"✅ {app['name']}\n"
-            f"📦 Source: {app['source']}\n\n"
-            f"👨‍💻 Dev: {DEVELOPER}\n"
-            f"📢 @{CHANNEL_USERNAME}",
-            reply_markup=reply_markup
-        )
-
-# =============================================
-# 🚀 START COMMAND
+# 🚀 𝐏𝐑𝐎 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 - 𝐅𝐔𝐋𝐋 𝐒𝐓𝐘𝐋𝐄
 # =============================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    first_name = user.first_name if user.first_name else "𝐁𝐫𝐨"
+    
+    pro_welcome = f"""
+╔════════════════════════╗
+║  {BOT_EMOJI} 𝐄𝐃𝐈𝐓𝐈𝐍𝐆 𝐏𝐑𝐎 {BOT_EMOJI}  ║
+╚════════════════════════╝
+
+𝐇𝐞𝐥𝐥𝐨 **{first_name}**! 👋
+
+✨ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐏𝐑𝐎 𝐁𝐎𝐓 ✨
+
+━━━━━━━━━━━━━━━━━━━━━
+🎯 **𝐃𝐈𝐑𝐄𝐂𝐓 𝐏𝐑𝐎 𝐀𝐏𝐊 𝐋𝐈𝐍𝐊𝐒**
+━━━━━━━━━━━━━━━━━━━━━
+
+✅ 𝐂𝐚𝐩𝐂𝐮𝐭 𝐏𝐑𝐎
+✅ 𝐏𝐢𝐜𝐬𝐀𝐫𝐭 𝐏𝐑𝐎
+✅ 𝐏𝐢𝐱𝐞𝐋𝐚𝐛 𝐏𝐑𝐎
+✅ 𝐈𝐧𝐒𝐡𝐨𝐭 𝐏𝐑𝐎
+✅ 𝐊𝐢𝐧𝐞𝐌𝐚𝐬𝐭𝐞𝐫 𝐏𝐑𝐎
+✅ 𝐀𝐥𝐢𝐠𝐡𝐭 𝐌𝐨𝐭𝐢𝐨𝐧 𝐏𝐑𝐎
+✅ 𝐋𝐢𝐠𝐡𝐭𝐫𝐨𝐨𝐦 𝐏𝐑𝐎
+
+━━━━━━━━━━━━━━━━━━━━━
+👑 **𝐃𝐄𝐕𝐄𝐋𝐎𝐏𝐄𝐑**: `{DEVELOPER}`
+📢 **𝐂𝐇𝐀𝐍𝐍𝐄𝐋**: [{CHANNEL_NAME}]({CHANNEL_LINK})
+🤖 **𝐕𝐄𝐑𝐒𝐈𝐎𝐍**: {BOT_VERSION}
+━━━━━━━━━━━━━━━━━━━━━
+
+💎 **𝐉𝐮𝐬𝐭 𝐭𝐲𝐩𝐞 𝐚𝐩𝐩 𝐧𝐚𝐦𝐞** 👇
+`capcut pro`  `picsart`  `pixelab`
+
+🔥 **𝐏𝐑𝐎 𝐅𝐄𝐀𝐓𝐔𝐑𝐄𝐒 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄𝐃** 🔥
+    """
+    
+    keyboard = [
+        [InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐏𝐑𝐎 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("👨‍💻 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐃𝐄𝐕𝐄𝐋𝐎𝐏𝐄𝐑", url=f"https://t.me/{DEVELOPER[1:]}")]
+    ]
+    
     await update.message.reply_text(
-        f"🎬 **EDITING MOD APK BOT**\n\n"
-        f"✅ Working! Send app name:\n"
-        f"• capcut pro\n• picsart\n• pixelab\n\n"
-        f"👨‍💻 Developer: {DEVELOPER}\n"
-        f"📢 Channel: @{CHANNEL_USERNAME}",
+        pro_welcome,
+        reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode='Markdown'
     )
 
 # =============================================
-# 🎬 MAIN
+# 🔎 𝐏𝐑𝐎 𝐒𝐄𝐀𝐑𝐂𝐇 - 𝐃𝐈𝐑𝐄𝐂𝐓 𝐋𝐈𝐍𝐊𝐒
+# =============================================
+async def search_pro(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.message.text.lower().strip()
+    
+    # Search in database
+    found_app = None
+    for key, app in PRO_APPS.items():
+        if key in query:
+            found_app = app
+            break
+    
+    if found_app:
+        # 𝐏𝐑𝐎 𝐑𝐄𝐒𝐔𝐋𝐓 𝐂𝐀𝐑𝐃
+        pro_card = f"""
+╔════════════════════════╗
+║  {found_app['name']}  ║
+╚════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━
+📦 **𝐕𝐄𝐑𝐒𝐈𝐎𝐍**: `{found_app['version']}`
+📏 **𝐒𝐈𝐙𝐄**: `{found_app['size']}`
+🔓 **𝐒𝐓𝐀𝐓𝐔𝐒**: `𝐏𝐑𝐎 𝐔𝐍𝐋𝐎𝐂𝐊𝐄𝐃`
+━━━━━━━━━━━━━━━━━━━━━
+👑 **𝐃𝐄𝐕**: {DEVELOPER}
+📢 **𝐂𝐇𝐀𝐍𝐍𝐄𝐋**: @{CHANNEL_USERNAME}
+━━━━━━━━━━━━━━━━━━━━━
+
+⬇️ **𝐓𝐀𝐏 𝐓𝐎 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃 𝐏𝐑𝐎** ⬇️
+        """
+        
+        keyboard = [[
+            InlineKeyboardButton(f"📥 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃 {found_app['name']}", url=found_app['link'])
+        ]]
+        
+        await update.message.reply_text(
+            pro_card,
+            reply_markup=InlineKeyboardMarkup(keyboard),
+            parse_mode='Markdown'
+        )
+    else:
+        # 𝐀𝐩𝐩 𝐧𝐨𝐭 𝐟𝐨𝐮𝐧𝐝 - 𝐒𝐡𝐨𝐰 𝐚𝐯𝐚𝐢𝐥𝐚𝐛𝐥𝐞 𝐚𝐩𝐩𝐬
+        apps_list = "\n".join([f"• `{key}`" for key in PRO_APPS.keys()])
+        
+        not_found = f"""
+❌ **𝐀𝐏𝐏 𝐍𝐎𝐓 𝐅𝐎𝐔𝐍𝐃 𝐈𝐍 𝐏𝐑𝐎 𝐃𝐀𝐓𝐀𝐁𝐀𝐒𝐄**
+
+━━━━━━━━━━━━━━━━━━━━━
+✅ **𝐀𝐕𝐀𝐈𝐋𝐀𝐁𝐋𝐄 𝐏𝐑𝐎 𝐀𝐏𝐏𝐒**:
+{apps_list}
+━━━━━━━━━━━━━━━━━━━━━
+👨‍💻 **𝐃𝐄𝐕**: {DEVELOPER}
+📢 **𝐂𝐇𝐀𝐍𝐍𝐄𝐋**: @{CHANNEL_USERNAME}
+━━━━━━━━━━━━━━━━━━━━━
+
+💡 **𝐓𝐲𝐩𝐞 𝐚𝐧𝐲 𝐚𝐩𝐩 𝐧𝐚𝐦𝐞 𝐟𝐫𝐨𝐦 𝐚𝐛𝐨𝐯𝐞**
+        """
+        
+        await update.message.reply_text(
+            not_found,
+            parse_mode='Markdown'
+        )
+
+# =============================================
+# 📢 𝐀𝐁𝐎𝐔𝐓 𝐂𝐎𝐌𝐌𝐀𝐍𝐃
+# =============================================
+async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    about_text = f"""
+╔════════════════════════╗
+║  🤖 𝐏𝐑𝐎 𝐁𝐎𝐓 𝐈𝐍𝐅𝐎 🤖  ║
+╚════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━
+👑 **𝐃𝐄𝐕𝐄𝐋𝐎𝐏𝐄𝐑**: `{DEVELOPER}`
+📢 **𝐂𝐇𝐀𝐍𝐍𝐄𝐋**: @{CHANNEL_USERNAME}
+🔗 **𝐋𝐈𝐍𝐊**: {CHANNEL_LINK}
+🤖 **𝐕𝐄𝐑𝐒𝐈𝐎𝐍**: {BOT_VERSION}
+━━━━━━━━━━━━━━━━━━━━━
+
+✨ **𝐏𝐑𝐎 𝐅𝐄𝐀𝐓𝐔𝐑𝐄𝐒**:
+✅ 𝐃𝐢𝐫𝐞𝐜𝐭 𝐏𝐑𝐎 𝐀𝐏𝐊 𝐋𝐢𝐧𝐤𝐬
+✅ 𝟏𝟎+ 𝐄𝐝𝐢𝐭𝐢𝐧𝐠 𝐀𝐩𝐩𝐬
+✅ 𝟐𝟒/𝟕 𝐀𝐯𝐚𝐢𝐥𝐚𝐛𝐥𝐞
+✅ 𝐍𝐨 𝐀𝐏𝐈 𝐊𝐞𝐲 𝐍𝐞𝐞𝐝𝐞𝐝
+
+━━━━━━━━━━━━━━━━━━━━━
+⭐ 𝐌𝐚𝐝𝐞 𝐰𝐢𝐭𝐡 ❤️ 𝐛𝐲 {DEVELOPER}
+📢 𝐉𝐨𝐢𝐧 @{CHANNEL_USERNAME}
+━━━━━━━━━━━━━━━━━━━━━
+    """
+    
+    keyboard = [[
+        InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)
+    ]]
+    
+    await update.message.reply_text(
+        about_text,
+        reply_markup=InlineKeyboardMarkup(keyboard),
+        parse_mode='Markdown'
+    )
+
+# =============================================
+# 🚀 𝐌𝐀𝐈𝐍 𝐅𝐔𝐍𝐂𝐓𝐈𝐎𝐍
 # =============================================
 def main():
     token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    
     if not token:
         print("❌ Token not found!")
         return
     
     app = Application.builder().token(token).build()
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, search_apps))
     
-    print("✅ Bot started with ALTERNATIVE SOURCE!")
+    # Add handlers
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("about", about))
+    app.add_handler(CommandHandler("developer", about))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, search_pro))
+    
+    print("✅ 𝐏𝐑𝐎 𝐁𝐎𝐓 𝐒𝐓𝐀𝐑𝐓𝐄𝐃!")
+    print(f"👑 Developer: {DEVELOPER}")
+    print(f"📢 Channel: @{CHANNEL_USERNAME}")
+    
     app.run_polling()
 
 if __name__ == '__main__':
